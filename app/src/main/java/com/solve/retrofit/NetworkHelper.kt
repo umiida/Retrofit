@@ -12,14 +12,14 @@ class NetworkHelper(private val api: Retrofit) {
         val call: Call<List<AndroidClass>> = api.create(ApiInterface::class.java).getClasses()
         call.enqueue(object : Callback<List<AndroidClass>> {
             override fun onFailure(call: Call<List<AndroidClass>>?, t: Throwable?) {
-                adapter.onFailure(t?.localizedMessage)
+                adapter.onFailure.invoke(t?.localizedMessage)
             }
 
             override fun onResponse(
                 call: Call<List<AndroidClass>>?,
                 response: Response<List<AndroidClass>>?
             ) {
-                response?.body()
+                adapter.onResponse.invoke(response?.body())
             }
 
         })
