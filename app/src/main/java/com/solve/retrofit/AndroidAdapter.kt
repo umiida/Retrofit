@@ -7,18 +7,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.solve.retrofit.model.AndroidClass
 import kotlinx.android.synthetic.main.item.view.*
 
-class AndroidAdapter: RecyclerView.Adapter<AndroidAdapter.AndroidViewHolder>(){
-    inner class AndroidViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun populateModel(model: AndroidClass?){
+class AndroidAdapter : RecyclerView.Adapter<AndroidAdapter.AndroidViewHolder>() {
+    inner class AndroidViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun populateModel(model: AndroidClass?) {
             itemView.tvItem.text = model?.name
         }
     }
 
     var models: List<AndroidClass>? = listOf()
-        set(value){
+        set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+    var onResponse: (List<AndroidClass>?) -> Unit = {}
+    fun onResponse(onResponse: (List<AndroidClass>?) -> Unit) {
+        this.onResponse = onResponse
+    }
+
+    var onFailure: (String?) -> Unit = {}
+    fun onFailure(onFailure: (String?) -> Unit) {
+        this.onFailure = onFailure
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AndroidViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
