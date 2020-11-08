@@ -19,7 +19,7 @@ class NetworkHelper(private val api: Retrofit) {
                 call: Call<List<AndroidClass>>?,
                 response: Response<List<AndroidClass>>?
             ) {
-                adapter.onResponse.invoke(response?.body())
+                response?.body().let{adapter.onResponse.invoke(it)}
             }
 
         })
