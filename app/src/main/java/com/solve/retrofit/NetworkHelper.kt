@@ -7,19 +7,19 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class NetworkHelper(private val api: Retrofit){
-    fun getClasses(listener: NetworkListener){
+class NetworkHelper(private val api: Retrofit) {
+    fun getClasses(adapter: AndroidAdapter) {
         val call: Call<List<AndroidClass>> = api.create(ApiInterface::class.java).getClasses()
-        call.enqueue(object: Callback<List<AndroidClass>>{
+        call.enqueue(object : Callback<List<AndroidClass>> {
             override fun onFailure(call: Call<List<AndroidClass>>?, t: Throwable?) {
-                listener.getFailure(t?.localizedMessage)
+                adapter.onFailure.invoke(t?.localizedMessage)
             }
 
             override fun onResponse(
                 call: Call<List<AndroidClass>>?,
                 response: Response<List<AndroidClass>>?
             ) {
-                listener.getResponse(response!!.body())
+                response?.body().let{adapter.onResponse.invoke(it)}
             }
 
         })
